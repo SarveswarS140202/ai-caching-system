@@ -108,7 +108,7 @@ def ask(request: Query):
         if not is_expired(entry):
             cache_hits += 1
             entry.last_access = time.time()
-            latency = int((time.time() - start) * 1000)
+            latency = max(1, int((time.time() - start) * 1000))
 
             return {
                 "answer": entry.answer,
@@ -127,7 +127,7 @@ def ask(request: Query):
             similarity = cosine_similarity(embedding, entry.embedding)
             if similarity > 0.95:
                 cache_hits += 1
-                latency = int((time.time() - start) * 1000)
+                latency = max(1, int((time.time() - start) * 1000))
 
                 return {
                     "answer": entry.answer,
@@ -146,8 +146,7 @@ def ask(request: Query):
 
     evict_lru()
 
-    latency = int((time.time() - start) * 1000)
-
+    latency = max(1, int((time.time() - start) * 1000))
     return {
         "answer": answer,
         "cached": False,
