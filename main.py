@@ -159,7 +159,7 @@ def ask(request: Query):
 # Analytics Endpoint
 # -----------------------
 
-@app.get("/analytics")
+@app.api_route("/analytics", methods=["GET", "POST"])
 def analytics():
     hit_rate = cache_hits / total_requests if total_requests else 0
 
